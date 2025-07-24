@@ -56,18 +56,35 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // If form is valid, submit it
+            // Replace the form submission code with:
             if (isValid) {
-                // In a real application, you would send the form data to a server here
-                // For this demo, we'll just show the success message
-                
-                // Show success message with animation
-                formSuccessMessage.style.display = 'flex';
-                setTimeout(() => {
-                    formSuccessMessage.classList.add('show');
-                }, 10);
-                
-                // Reset form
-                contactForm.reset();
+            // Prepare the email parameters
+            const templateParams = {
+                from_name: name.value,
+                from_email: email.value,
+                phone: document.getElementById('phone').value,
+                subject: subject.value,
+                message: message.value,
+                inquiry_type: document.getElementById('inquiry').value,
+                newsletter: document.getElementById('newsletter').checked ? 'Yes' : 'No',
+                to_email: 'paldimaresourcesltd@gmail.com'
+            };
+            
+            // Send the email using EmailJS
+            emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+                .then(function(response) {
+                    // Show success message
+                    formSuccessMessage.style.display = 'flex';
+                    setTimeout(() => {
+                        formSuccessMessage.classList.add('show');
+                    }, 10);
+                    
+                    // Reset form
+                    contactForm.reset();
+                }, function(error) {
+                    console.error('Email sending failed:', error);
+                    alert('Sorry, there was an error sending your message. Please try again later.');
+                });
             }
         });
         
